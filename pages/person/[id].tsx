@@ -7,6 +7,7 @@ import { ImageWithFallback } from '@/components/common/ImageWithFallback';
 import { getProfileUrl } from '@/utils/tmdb';
 import { usePersonDetails } from '@/hooks/usePerson';
 import { MediaCard } from '@/components/media/MediaCard';
+import { Movie, TVShow } from '@/types';
 
 export default function PersonDetailsPage() {
   const router = useRouter();
