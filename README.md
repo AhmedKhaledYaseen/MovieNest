@@ -2,7 +2,7 @@
 
 MovieNest is a modern web application built with Next.js that allows users to explore, search, and discover movies, TV shows, and actors. Users can create accounts to save their favorite content and maintain watchlists.
 
-**Live Demo:** [https://movie-nest-123.vercel.app](https://movie-nest-123.vercel.app)
+**Live Demo:** [https://movie-nest-three-ruddy.vercel.app](https://movie-nest-three-ruddy.vercel.app)
 
 ## Tech Stack
 
