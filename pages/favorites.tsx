@@ -5,7 +5,46 @@ import { useFavorites } from '@/hooks/useFavorites';
 import { MediaCard } from '@/components/media/MediaCard';
 import { EmptyState } from '@/components/common/EmptyState';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import { FavoriteItem } from '@/types';
+import { Movie, TVShow } from '@/types';
+
+/** Map a FavoriteItem into the minimal Movie/TVShow shape MediaCard needs */
+function toMediaItem(item: FavoriteItem): Movie | TVShow {
+  if (item.mediaType === 'movie') {
+    return {
+      id: item.id,
+      title: item.title,
+      original_title: item.title,
+      overview: null,
+      poster_path: item.posterPath,
+      backdrop_path: null,
+      release_date: item.releaseDate,
+      vote_average: item.voteAverage,
+      vote_count: 0,
+      popularity: 0,
+      genre_ids: [],
+      genres: [],
+      adult: false,
+      media_type: 'movie',
+    } as Movie;
+  }
+  return {
+    id: item.id,
+    name: item.title,
+    original_name: item.title,
+    overview: null,
+    poster_path: item.posterPath,
+    backdrop_path: null,
+    first_air_date: item.releaseDate,
+    vote_average: item.voteAverage,
+    vote_count: 0,
+    popularity: 0,
+    genre_ids: [],
+    genres: [],
+    media_type: 'tv',
+  } as TVShow;
+}
 
 export default function FavoritesPage() {
   const { favorites } = useFavorites();
@@ -13,8 +52,8 @@ export default function FavoritesPage() {
   
   useEffect(() => setMounted(true), []);
 
-  const movies = favorites.filter((f) => f.mediaType === 'movie');
-  const tvShows = favorites.filter((f) => f.mediaType === 'tv');
+  const movies = useMemo(() => favorites.filter((f) => f.mediaType === 'movie'), [favorites]);
+  const tvShows = useMemo(() => favorites.filter((f) => f.mediaType === 'tv'), [favorites]);
 
   if (!mounted) return null;
 
@@ -43,7 +82,7 @@ export default function FavoritesPage() {
               <TabsContent value="all">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
                   {favorites.map((item) => (
-                    <MediaCard key={`fav-${item.mediaType}-${item.id}`} item={item as any} mediaType={item.mediaType} />
+                    <MediaCard key={`fav-${item.mediaType}-${item.id}`} item={toMediaItem(item)} mediaType={item.mediaType} />
                   ))}
                 </div>
               </TabsContent>
@@ -51,7 +90,7 @@ export default function FavoritesPage() {
               <TabsContent value="movies">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
                   {movies.map((item) => (
-                    <MediaCard key={`fav-movie-${item.id}`} item={item as any} mediaType="movie" />
+                    <MediaCard key={`fav-movie-${item.id}`} item={toMediaItem(item)} mediaType="movie" />
                   ))}
                 </div>
               </TabsContent>
@@ -59,7 +98,7 @@ export default function FavoritesPage() {
               <TabsContent value="tv">
                 <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 sm:gap-6">
                   {tvShows.map((item) => (
-                    <MediaCard key={`fav-tv-${item.id}`} item={item as any} mediaType="tv" />
+                    <MediaCard key={`fav-tv-${item.id}`} item={toMediaItem(item)} mediaType="tv" />
                   ))}
                 </div>
               </TabsContent>

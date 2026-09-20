@@ -1,6 +1,7 @@
 import { useFavoritesStore } from '@/store/favoritesStore';
 import { useAuth } from './useAuth';
 import { FavoriteItem } from '@/types';
+import { useNotificationStore } from '@/store/notificationStore';
 import { toast } from 'sonner';
 
 export const useFavorites = () => {
@@ -9,10 +10,11 @@ export const useFavorites = () => {
 
   const userId = user?.id || 'guest';
   const favorites = store.favoritesByUser[userId] || [];
+  const { addNotification } = useNotificationStore();
 
   const handleAction = (action: () => void) => {
     if (!isAuthenticated) {
-      toast.error('Please log in to save favorites');
+      addNotification('guest', 'Please log in to save favorites');
       return;
     }
     action();
@@ -21,13 +23,15 @@ export const useFavorites = () => {
   const addFavorite = (item: Omit<FavoriteItem, 'addedAt'>) => {
     handleAction(() => {
       store.addFavorite(userId, item);
-      toast.success('Added to favorites');
+      addNotification(userId, `${item.title} added to favorites`);
+      toast.success(`${item.title} added to favorites`);
     });
   };
 
   const removeFavorite = (id: number, mediaType: 'movie' | 'tv') => {
     handleAction(() => {
       store.removeFavorite(userId, id, mediaType);
+      addNotification(userId, 'Removed from favorites');
       toast.success('Removed from favorites');
     });
   };
@@ -37,9 +41,11 @@ export const useFavorites = () => {
       const isFav = store.isFavorite(userId, item.id, item.mediaType);
       store.toggleFavorite(userId, item);
       if (isFav) {
-        toast.success('Removed from favorites');
+        addNotification(userId, `${item.title} removed from favorites`);
+        toast.success(`${item.title} removed from favorites`);
       } else {
-        toast.success('Added to favorites');
+        addNotification(userId, `${item.title} added to favorites`);
+        toast.success(`${item.title} added to favorites`);
       }
     });
   };

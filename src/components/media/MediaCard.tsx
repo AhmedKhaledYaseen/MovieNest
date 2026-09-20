@@ -24,7 +24,7 @@ export function MediaCard({ item, mediaType }: MediaCardProps) {
   const title = isMovie ? item.title : (item as TVShow).name;
   const date = isMovie ? item.release_date : (item as TVShow).first_air_date;
   const type = mediaType || (item.media_type) || (isMovie ? 'movie' : 'tv');
-  const href = `/${type}/${item.id}`;
+  const href = `/${type === 'movie' ? 'movies' : 'tv'}/${item.id}`;
 
   const { isFavorite, toggleFavorite } = useFavorites();
   const { isWatchlist, toggleWatchlist } = useWatchlist();

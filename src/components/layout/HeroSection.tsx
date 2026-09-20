@@ -48,11 +48,13 @@ export function HeroSection({ item, isLoading, mediaType }: HeroSectionProps) {
           </p>
 
           <div className="flex flex-wrap items-center gap-3 pt-4">
-            <Button size="lg" className="rounded-full font-semibold px-8 gap-2">
-              <Play className="w-5 h-5 fill-current" /> Play Trailer
+            <Button size="lg" className="rounded-full font-semibold px-8 gap-2" asChild>
+              <Link href={`/${type === 'movie' ? 'movies' : 'tv'}/${item.id}`}>
+                <Play className="w-5 h-5 fill-current" /> Play Trailer
+              </Link>
             </Button>
             <Button size="lg" variant="secondary" className="rounded-full font-semibold px-8 gap-2 bg-secondary/80 hover:bg-secondary text-secondary-foreground border-0 backdrop-blur-sm" asChild>
-              <Link href={`/${type}/${item.id}`}>
+              <Link href={`/${type === 'movie' ? 'movies' : 'tv'}/${item.id}`}>
                 <Info className="w-5 h-5" /> More Info
               </Link>
             </Button>

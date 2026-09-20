@@ -8,9 +8,7 @@ interface RatingProps {
 
 export function Rating({ value, className }: RatingProps) {
   const rounded = value.toFixed(1);
-  const color = value >= 7 ? 'text-green-500 fill-green-500' 
-    : value >= 5 ? 'text-yellow-500 fill-yellow-500' 
-    : 'text-red-500 fill-red-500';
+  const color = 'text-yellow-500 fill-yellow-500';
 
   return (
     <div className={cn("flex items-center gap-1 font-semibold", className)}>

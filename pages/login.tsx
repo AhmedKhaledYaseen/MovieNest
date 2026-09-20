@@ -23,7 +23,7 @@ export default function LoginPage() {
   if (!isReady || isAuthenticated) return null;
 
   return (
-    <Layout>
+    <Layout hideHeaderAndFooter>
       <Head>
         <title>Login — MovieNest</title>
       </Head>

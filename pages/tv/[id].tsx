@@ -4,6 +4,7 @@ import { Layout } from '@/components/layout/Layout';
 import { MediaDetails } from '@/components/media/MediaDetails';
 import { MediaRow } from '@/components/media/MediaRow';
 import { PersonCard } from '@/components/people/PersonCard';
+import { PersonRow } from '@/components/people/PersonRow';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/common/ErrorState';
 import { ImageWithFallback } from '@/components/common/ImageWithFallback';
@@ -54,7 +55,7 @@ export default function TVShowDetailsPage() {
 
   const cast = credits?.cast.slice(0, 10) || [];
   const title = `${tvShow.name} — MovieNest`;
-  const seasons = tvShow.seasons || [];
+  const seasons = (tvShow.seasons || []).filter(season => !!season.poster_path);
 
   return (
     <Layout>
@@ -101,21 +102,12 @@ export default function TVShowDetailsPage() {
         )}
 
         {cast.length > 0 && (
-          <section className="space-y-4">
-            <h2 className="text-2xl font-bold tracking-tight">Top Cast</h2>
-            <div className="flex overflow-x-auto gap-4 md:gap-6 pb-4 snap-x snap-mandatory scrollbar-hide -mx-4 px-4 sm:mx-0 sm:px-0">
-              {cast.map((person) => (
-                <div key={person.id} className="flex-none w-[120px] sm:w-[140px] md:w-[160px] snap-start">
-                  <PersonCard person={{
-                    id: person.id,
-                    name: person.name,
-                    profile_path: person.profile_path,
-                    known_for_department: person.character, 
-                  } as any} />
-                </div>
-              ))}
-            </div>
-          </section>
+          <PersonRow title="Top Cast" items={cast.map((person) => ({
+            id: person.id,
+            name: person.name,
+            profile_path: person.profile_path,
+            known_for_department: person.character, 
+          } as any))} />
         )}
 
         {similar?.results && similar.results.length > 0 && (

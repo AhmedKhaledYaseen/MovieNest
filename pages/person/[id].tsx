@@ -6,7 +6,7 @@ import { ErrorState } from '@/components/common/ErrorState';
 import { ImageWithFallback } from '@/components/common/ImageWithFallback';
 import { getProfileUrl } from '@/utils/tmdb';
 import { usePersonDetails } from '@/hooks/usePerson';
-import { MediaRow } from '@/components/media/MediaRow';
+import { MediaCard } from '@/components/media/MediaCard';
 
 export default function PersonDetailsPage() {
   const router = useRouter();
@@ -139,12 +139,13 @@ export default function PersonDetailsPage() {
             )}
             
             {knownFor.length > 0 && (
-              <div className="pt-4">
-                <MediaRow
-                  title="Known For"
-                  items={knownFor as any[]}
-                  isLoading={false}
-                />
+              <div className="pt-4 space-y-4">
+                <h2 className="text-2xl font-bold tracking-tight">Known For</h2>
+                <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 sm:gap-4">
+                  {knownFor.filter(item => !!item.poster_path).map((item) => (
+                    <MediaCard key={item.id} item={item as any} mediaType={item.media_type as any} />
+                  ))}
+                </div>
               </div>
             )}
           </div>

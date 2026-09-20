@@ -1,6 +1,7 @@
 import { useWatchlistStore } from '@/store/watchlistStore';
 import { useAuth } from './useAuth';
 import { WatchlistItem } from '@/types';
+import { useNotificationStore } from '@/store/notificationStore';
 import { toast } from 'sonner';
 
 export const useWatchlist = () => {
@@ -9,10 +10,11 @@ export const useWatchlist = () => {
 
   const userId = user?.id || 'guest';
   const watchlist = store.watchlistByUser[userId] || [];
+  const { addNotification } = useNotificationStore();
 
   const handleAction = (action: () => void) => {
     if (!isAuthenticated) {
-      toast.error('Please log in to save to your watchlist');
+      addNotification('guest', 'Please log in to save to your watchlist');
       return;
     }
     action();
@@ -21,13 +23,15 @@ export const useWatchlist = () => {
   const addWatchlist = (item: Omit<WatchlistItem, 'addedAt'>) => {
     handleAction(() => {
       store.addWatchlist(userId, item);
-      toast.success('Added to watchlist');
+      addNotification(userId, `${item.title} added to watchlist`);
+      toast.success(`${item.title} added to watchlist`);
     });
   };
 
   const removeWatchlist = (id: number, mediaType: 'movie' | 'tv') => {
     handleAction(() => {
       store.removeWatchlist(userId, id, mediaType);
+      addNotification(userId, 'Removed from watchlist');
       toast.success('Removed from watchlist');
     });
   };
@@ -37,9 +41,11 @@ export const useWatchlist = () => {
       const isIn = store.isWatchlist(userId, item.id, item.mediaType);
       store.toggleWatchlist(userId, item);
       if (isIn) {
-        toast.success('Removed from watchlist');
+        addNotification(userId, `${item.title} removed from watchlist`);
+        toast.success(`${item.title} removed from watchlist`);
       } else {
-        toast.success('Added to watchlist');
+        addNotification(userId, `${item.title} added to watchlist`);
+        toast.success(`${item.title} added to watchlist`);
       }
     });
   };

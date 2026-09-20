@@ -1,11 +1,12 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Search, Bell, Menu, LogOut, User as UserIcon } from 'lucide-react';
+import { Search, Bell, Menu, LogOut, User as UserIcon, X } from 'lucide-react';
 import { useUIStore } from '@/store/uiStore';
 import { MobileMenu } from './MobileMenu';
 import { useAuth } from '@/hooks/useAuth';
 import { useState, useEffect } from 'react';
 import { ThemeToggle } from '../common/ThemeToggle';
+import { useNotificationStore } from '@/store/notificationStore';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -21,6 +22,13 @@ export function Navbar() {
   
   const [mounted, setMounted] = useState(false);
   useEffect(() => setMounted(true), []);
+
+  const userId = user?.id || 'guest';
+  const notifications = useNotificationStore(state => state.notificationsByUser[userId]);
+  const safeNotifications = notifications || [];
+  const unreadCount = safeNotifications.filter(n => !n.read).length;
+  const markAsRead = useNotificationStore(state => state.markAsRead);
+  const deleteNotification = useNotificationStore(state => state.deleteNotification);
 
   return (
     <>
@@ -46,11 +54,54 @@ export function Navbar() {
             
             {mounted && isAuthenticated ? (
               <>
-                <Button variant="ghost" size="icon" className="text-foreground/80 hover:text-foreground rounded-full hidden sm:flex">
-                  <Bell className="w-5 h-5" />
-                </Button>
+                <DropdownMenu modal={false} onOpenChange={(open) => { if (open && unreadCount > 0) markAsRead(userId) }}>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" size="icon" className="text-foreground/80 hover:text-foreground rounded-full hidden sm:flex relative">
+                      <Bell className="w-5 h-5" />
+                      {unreadCount > 0 && (
+                        <span className="absolute top-1 right-1 flex h-2.5 w-2.5">
+                          <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75"></span>
+                          <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-red-500"></span>
+                        </span>
+                      )}
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-80 max-h-[400px] overflow-y-auto">
+                    <DropdownMenuLabel>Notifications</DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    {safeNotifications.length === 0 ? (
+                      <div className="p-4 text-center text-sm text-muted-foreground">
+                        No new notifications
+                      </div>
+                    ) : (
+                      safeNotifications.map(notif => (
+                        <div key={notif.id} className={`p-3 text-sm border-b last:border-0 relative group ${!notif.read ? 'bg-primary/5' : ''}`}>
+                          <div className="pr-6">
+                            <p className="font-medium text-foreground">{notif.message}</p>
+                            <p className="text-xs text-muted-foreground mt-1">
+                              {new Date(notif.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                            </p>
+                          </div>
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            className="h-6 w-6 absolute right-2 top-3 opacity-0 group-hover:opacity-100 transition-opacity"
+                            onClick={(e) => {
+                              e.preventDefault();
+                              e.stopPropagation();
+                              deleteNotification(userId, notif.id);
+                            }}
+                          >
+                            <X className="h-3 w-3 text-muted-foreground hover:text-destructive" />
+                            <span className="sr-only">Delete notification</span>
+                          </Button>
+                        </div>
+                      ))
+                    )}
+                  </DropdownMenuContent>
+                </DropdownMenu>
                 
-                <DropdownMenu>
+                <DropdownMenu modal={false}>
                   <DropdownMenuTrigger asChild>
                     <Button variant="ghost" className="hidden sm:flex relative h-8 w-8 rounded-full bg-primary/10 text-primary">
                       {user?.name?.charAt(0).toUpperCase() || <UserIcon className="w-4 h-4" />}

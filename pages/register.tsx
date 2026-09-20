@@ -23,7 +23,7 @@ export default function RegisterPage() {
   if (!isReady || isAuthenticated) return null;
 
   return (
-    <Layout>
+    <Layout hideHeaderAndFooter>
       <Head>
         <title>Register — MovieNest</title>
       </Head>

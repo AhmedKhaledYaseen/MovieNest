@@ -1,24 +1,22 @@
 import { useRef, useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Movie, TVShow } from '@/types';
-import { MediaCard, MediaCardSkeleton } from './MediaCard';
+import { Person } from '@/types';
+import { PersonCard, PersonCardSkeleton } from './PersonCard';
 
-interface MediaRowProps {
+interface PersonRowProps {
   title: string;
-  items?: (Movie | TVShow)[];
+  items?: Person[];
   isLoading?: boolean;
   skeletonCount?: number;
-  mediaType?: 'movie' | 'tv';
 }
 
-export function MediaRow({ 
+export function PersonRow({ 
   title, 
   items = [], 
   isLoading = false, 
   skeletonCount = 6,
-  mediaType 
-}: MediaRowProps) {
+}: PersonRowProps) {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   const [showArrows, setShowArrows] = useState(false);
 
@@ -42,6 +40,12 @@ export function MediaRow({
       scrollContainerRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
     }
   };
+
+  const validItems = items.filter(item => !!item.profile_path);
+
+  if (!isLoading && validItems.length === 0) {
+    return null;
+  }
 
   return (
     <section className="space-y-4">
@@ -67,14 +71,14 @@ export function MediaRow({
         >
           {isLoading ? (
             Array.from({ length: skeletonCount }).map((_, i) => (
-              <div key={i} className="flex-none w-[calc((100%-16px)/2)] sm:w-[calc((100%-32px)/3)] md:w-[calc((100%-72px)/4)] lg:w-[calc((100%-120px)/6)] snap-start">
-                <MediaCardSkeleton />
+              <div key={i} className="flex-none w-[120px] sm:w-[140px] md:w-[160px] snap-start">
+                <PersonCardSkeleton />
               </div>
             ))
           ) : (
-            items.filter(item => !!item.poster_path).map((item) => (
-              <div key={item.id} className="flex-none w-[calc((100%-16px)/2)] sm:w-[calc((100%-32px)/3)] md:w-[calc((100%-72px)/4)] lg:w-[calc((100%-120px)/6)] snap-start">
-                <MediaCard item={item} mediaType={mediaType} />
+            validItems.map((item) => (
+              <div key={item.id} className="flex-none w-[120px] sm:w-[140px] md:w-[160px] snap-start">
+                <PersonCard person={item} />
               </div>
             ))
           )}
