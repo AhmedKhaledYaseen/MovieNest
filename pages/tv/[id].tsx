@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { Layout } from '@/components/layout/Layout';
 import { MediaDetails } from '@/components/media/MediaDetails';
 import { MediaRow } from '@/components/media/MediaRow';
-import { PersonCard } from '@/components/people/PersonCard';
 import { PersonRow } from '@/components/people/PersonRow';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/common/ErrorState';
+import { Person } from '@/types';
 import { ImageWithFallback } from '@/components/common/ImageWithFallback';
 import { getPosterUrl } from '@/utils/tmdb';
 import { getYear } from '@/utils/date';
@@ -25,7 +25,7 @@ export default function TVShowDetailsPage() {
   const tvId = id as string;
 
   const { data: tvShow, isLoading: isTVLoading, isError: isTVError } = useTVShowDetails(tvId);
-  const { data: credits, isLoading: isCreditsLoading } = useTVShowCredits(tvId);
+  const { data: credits } = useTVShowCredits(tvId);
   const { data: videos } = useTVShowVideos(tvId);
   const { data: similar, isLoading: isSimilarLoading } = useSimilarTVShows(tvId);
   const { data: recommendations, isLoading: isRecommendationsLoading } = useTVShowRecommendations(tvId);
@@ -107,7 +107,7 @@ export default function TVShowDetailsPage() {
             name: person.name,
             profile_path: person.profile_path,
             known_for_department: person.character, 
-          } as any))} />
+          } as Person))} />
         )}
 
         {similar?.results && similar.results.length > 0 && (

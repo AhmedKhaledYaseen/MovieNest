@@ -32,7 +32,7 @@ export default function TVShowsPage() {
   }, [router.isReady, router.query]);
 
   const updateUrl = (newPage: number, newGenre?: number, newSort?: string) => {
-    const query: any = {};
+    const query: Record<string, string | number> = {};
     if (newPage > 1) query.page = newPage;
     if (newGenre) query.genre = newGenre;
     if (newSort && newSort !== 'popularity.desc') query.sort = newSort;

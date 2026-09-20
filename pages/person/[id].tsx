@@ -143,7 +143,7 @@ export default function PersonDetailsPage() {
                 <h2 className="text-2xl font-bold tracking-tight">Known For</h2>
                 <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 xl:grid-cols-7 gap-3 sm:gap-4">
                   {knownFor.filter(item => !!item.poster_path).map((item) => (
-                    <MediaCard key={item.id} item={item as any} mediaType={item.media_type as any} />
+                    <MediaCard key={item.id} item={item as Movie | TVShow} mediaType={item.media_type as 'movie' | 'tv'} />
                   ))}
                 </div>
               </div>

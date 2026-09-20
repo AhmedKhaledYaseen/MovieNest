@@ -55,7 +55,7 @@ export default function AboutPage() {
             classics, and hidden gems.
           </p>
           <p className="text-muted-foreground leading-relaxed">
-            Whether you're a casual viewer or a hardcore cinephile, MovieNest adapts to your taste. Build your
+            Whether you&apos;re a casual viewer or a hardcore cinephile, MovieNest adapts to your taste. Build your
             watchlist, mark your favorites, and explore thousands of titles across every genre — all in one place.
           </p>
         </div>

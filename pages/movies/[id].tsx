@@ -3,10 +3,10 @@ import { useRouter } from 'next/router';
 import { Layout } from '@/components/layout/Layout';
 import { MediaDetails } from '@/components/media/MediaDetails';
 import { MediaRow } from '@/components/media/MediaRow';
-import { PersonCard } from '@/components/people/PersonCard';
 import { PersonRow } from '@/components/people/PersonRow';
 import { Skeleton } from '@/components/ui/skeleton';
 import { ErrorState } from '@/components/common/ErrorState';
+import { Person } from '@/types';
 import {
   useMovieDetails,
   useMovieCredits,
@@ -21,7 +21,7 @@ export default function MovieDetailsPage() {
   const movieId = id as string;
 
   const { data: movie, isLoading: isMovieLoading, isError: isMovieError } = useMovieDetails(movieId);
-  const { data: credits, isLoading: isCreditsLoading } = useMovieCredits(movieId);
+  const { data: credits } = useMovieCredits(movieId);
   const { data: videos } = useMovieVideos(movieId);
   const { data: similar, isLoading: isSimilarLoading } = useSimilarMovies(movieId);
   const { data: recommendations, isLoading: isRecommendationsLoading } = useMovieRecommendations(movieId);
@@ -72,7 +72,7 @@ export default function MovieDetailsPage() {
             name: person.name,
             profile_path: person.profile_path,
             known_for_department: person.character, 
-          } as any))} />
+          } as Person))} />
         )}
 
         {similar?.results && similar.results.length > 0 && (
