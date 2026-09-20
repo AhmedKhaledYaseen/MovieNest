@@ -4,16 +4,17 @@ import { cn } from '@/lib/utils';
 interface RatingProps {
   value: number;
   className?: string;
+  textColor?: string;
 }
 
-export function Rating({ value, className }: RatingProps) {
+export function Rating({ value, className, textColor }: RatingProps) {
   const rounded = value.toFixed(1);
   const color = 'text-yellow-500 fill-yellow-500';
 
   return (
     <div className={cn("flex items-center gap-1 font-semibold", className)}>
       <Star className={cn("w-4 h-4", color)} />
-      <span>{rounded}</span>
+      <span className={textColor}>{rounded}</span>
     </div>
   );
 }
