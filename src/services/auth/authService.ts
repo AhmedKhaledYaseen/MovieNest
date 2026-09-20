@@ -18,7 +18,12 @@ export const register = async (data: RegisterData): Promise<AuthResponse> => {
 
   saveUser(newUser);
 
-  const { password: _password, ...userWithoutPassword } = newUser;
+  const userWithoutPassword = {
+    id: newUser.id,
+    name: newUser.name,
+    email: newUser.email,
+    createdAt: newUser.createdAt,
+  };
   return { success: true, user: userWithoutPassword };
 };
 
@@ -31,7 +36,12 @@ export const login = async (data: LoginData): Promise<AuthResponse> => {
     return { success: false, error: 'Invalid email or password' };
   }
 
-  const { password: _password, ...userWithoutPassword } = user;
+  const userWithoutPassword = {
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    createdAt: user.createdAt,
+  };
   return { success: true, user: userWithoutPassword };
 };
 
