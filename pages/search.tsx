@@ -32,7 +32,7 @@ export default function SearchPage() {
   }, [router.isReady, router.query]);
 
   const updateUrl = (newQuery: string, newType: string, newPage: number) => {
-    const queryObj: any = {};
+    const queryObj: Record<string, string | number> = {};
     if (newQuery) queryObj.q = newQuery;
     if (newType !== 'multi') queryObj.type = newType;
     if (newPage > 1) queryObj.page = newPage;

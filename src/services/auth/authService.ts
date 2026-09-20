@@ -18,7 +18,7 @@ export const register = async (data: RegisterData): Promise<AuthResponse> => {
 
   saveUser(newUser);
 
-  const { password, ...userWithoutPassword } = newUser;
+  const { password: _password, ...userWithoutPassword } = newUser;
   return { success: true, user: userWithoutPassword };
 };
 
@@ -31,7 +31,7 @@ export const login = async (data: LoginData): Promise<AuthResponse> => {
     return { success: false, error: 'Invalid email or password' };
   }
 
-  const { password, ...userWithoutPassword } = user;
+  const { password: _password, ...userWithoutPassword } = user;
   return { success: true, user: userWithoutPassword };
 };
 

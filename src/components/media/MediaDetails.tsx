@@ -99,7 +99,7 @@ export function MediaDetails({ item, mediaType, trailerKey }: MediaDetailsProps)
               </h1>
               {item.tagline && (
                 <p className="text-lg md:text-xl text-muted-foreground italic">
-                  "{item.tagline}"
+                  &quot;{item.tagline}&quot;
                 </p>
               )}
             </div>
