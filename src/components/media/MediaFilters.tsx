@@ -24,8 +24,6 @@ export const SORT_OPTIONS = [
   { label: "Least Popular", value: "popularity.asc" },
   { label: "Highest Rated", value: "vote_average.desc" },
   { label: "Lowest Rated", value: "vote_average.asc" },
-  { label: "Newest First", value: "primary_release_date.desc" },
-  { label: "Oldest First", value: "primary_release_date.asc" },
 ];
 
 export function MediaFilters({

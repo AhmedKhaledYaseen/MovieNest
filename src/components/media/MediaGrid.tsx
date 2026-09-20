@@ -34,7 +34,7 @@ export function MediaGrid({
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4 md:gap-6">
-      {items.map((item) => (
+      {items.filter(item => !!item.poster_path).map((item) => (
         <MediaCard key={item.id} item={item} mediaType={mediaType} />
       ))}
     </div>

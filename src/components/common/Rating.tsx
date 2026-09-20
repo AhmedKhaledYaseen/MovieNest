@@ -8,7 +8,7 @@ interface RatingProps {
 }
 
 export function Rating({ value, className, textColor }: RatingProps) {
-  const rounded = value.toFixed(1);
+  const rounded = (value || 0).toFixed(1);
   const color = 'text-yellow-500 fill-yellow-500';
 
   return (

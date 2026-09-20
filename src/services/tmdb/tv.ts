@@ -25,6 +25,14 @@ export const discoverTVShows = ({ page = 1, genre, sort = 'popularity.desc' }: D
     sort_by: sort,
   };
   if (genre) params.with_genres = genre.toString();
+  
+  // Fix unstable TMDB pagination causing duplicate TV shows on different pages
+  if (sort.includes('vote_average')) {
+    params['vote_count.gte'] = '300';
+  } else if (sort.includes('popularity')) {
+    params['vote_count.gte'] = '100';
+  }
+  
   return get<PaginatedResponse<TVShow>>('/api/tmdb/discover/tv', params);
 };
 

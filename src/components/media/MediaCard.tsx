@@ -71,8 +71,8 @@ export function MediaCard({ item, mediaType }: MediaCardProps) {
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
             className="object-cover"
           />
-          <div className="absolute top-2 right-2 z-10 bg-white/90 dark:bg-black/60 backdrop-blur-md rounded-md px-2 py-1 text-xs text-black dark:text-white">
-            <Rating value={item.vote_average} textColor="text-black dark:text-white" />
+          <div className="absolute top-2 right-2 z-10 bg-black/60 backdrop-blur-md rounded-md px-2 py-1 text-xs text-white">
+            <Rating value={item.vote_average} textColor="text-white" />
           </div>
           
           <div className="absolute top-2 left-2 z-10 flex flex-col gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
