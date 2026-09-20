@@ -29,7 +29,7 @@ export default function Home() {
   return (
     <Layout>
       <Head>
-        <title>MovieNest - Discover Movies & TV Shows</title>
+        <title>MovieNest</title>
         <meta name="description" content="Your ultimate destination for movies and TV shows." />
       </Head>
 
