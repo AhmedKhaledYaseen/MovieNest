@@ -51,13 +51,13 @@ export function MediaRow({
         >
           {isLoading ? (
             Array.from({ length: skeletonCount }).map((_, i) => (
-              <div key={i} className="flex-none w-[140px] sm:w-[160px] md:w-[200px] snap-start">
+              <div key={i} className="flex-none w-[calc((100%-16px)/2)] sm:w-[calc((100%-32px)/3)] md:w-[calc((100%-72px)/4)] lg:w-[calc((100%-120px)/6)] snap-start">
                 <MediaCardSkeleton />
               </div>
             ))
           ) : (
             items.map((item) => (
-              <div key={item.id} className="flex-none w-[140px] sm:w-[160px] md:w-[200px] snap-start">
+              <div key={item.id} className="flex-none w-[calc((100%-16px)/2)] sm:w-[calc((100%-32px)/3)] md:w-[calc((100%-72px)/4)] lg:w-[calc((100%-120px)/6)] snap-start">
                 <MediaCard item={item} mediaType={mediaType} />
               </div>
             ))
